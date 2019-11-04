@@ -84,6 +84,8 @@ app.put('/contactEdit', (req, res) =>{
 });
 
 app.put('/contactDelete', (req,res) =>{
-
+    res.setHeader('Content-Type', 'application/json');
+    users[0].contacts.splice(req.body.index, 1);
+    res.send(users[0]);
 });
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
