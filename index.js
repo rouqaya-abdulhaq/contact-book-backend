@@ -1,4 +1,5 @@
-const users = [];
+const users = [{name : "rahaf", email : "rahaf@gmail.com", password : "green"},
+    {name : "rouqaya", email : "rouqaya@gmail.com", password : "red"}];
 
 /*
     PLAN :
@@ -13,17 +14,14 @@ const users = [];
 const express = require('express')
 const body_parser = require('body-parser');
 const app = express()
-// const body_parser = require('body-parser');
 const port = 3000
 
-// const urlc = app.use(body_parser.urlencoded({ extended: false }))
 
 app.use(body_parser.urlencoded({ extended: true }))
 
 app.use(body_parser.json());
 
 
-// const urlEncodedParser = 
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
@@ -31,14 +29,21 @@ app.post('/signUp', (req, res) =>{
     res.setHeader('Content-Type', 'application/json');
     const newUser = {
         name : req.body.name,
-        email : req.body.email
+        email : req.body.email,
+        password : req.body.password
     }
     users.push(newUser);
     res.send(users);
 })
 
 app.post('/signIn', (req, res) =>{
-
+    res.setHeader('Content-Type', 'application/json');
+    for (user of users){
+        if(user.name === req.body.name && user.email === req.body.email && user.password === req.body.password){
+            res.send(user);
+        }
+    }
+    res.send("user not found");
 
 });
 
