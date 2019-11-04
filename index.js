@@ -1,4 +1,17 @@
-const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red", contacts : []}];
+const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red", contacts : [
+    {
+        firstName : "rahaf",
+        lastName : "abdulhaq",
+        email : "rahaf@gmail.com",
+        phoneNumber : "765373768"
+        },
+        {
+            firstName : "ghada",
+            lastName : "abdulhaq",
+            email : "ghada@gmail.com",
+            phoneNumber : "765373768"
+        }   
+]}];
 
 /*
     PLAN :
@@ -59,7 +72,15 @@ app.put('/contactAdd', (req, res) =>{
 });
 
 app.put('/contactEdit', (req, res) =>{
-
+    res.setHeader('Content-Type', 'application/json');
+    const editedContact = {
+        firstName : req.body.firstName,
+        lastName : req.body.lastName,
+        email : req.body.email,
+        phoneNumber : req.body.phoneNumber
+    }
+    users[0].contacts[req.body.index] = editedContact;
+    res.send(users[0]);
 });
 
 app.put('/contactDelete', (req,res) =>{
