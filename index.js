@@ -1,5 +1,4 @@
-const users = [{name : "rahaf", email : "rahaf@gmail.com", password : "green"},
-    {name : "rouqaya", email : "rouqaya@gmail.com", password : "red"}];
+const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red", contacts : []}];
 
 /*
     PLAN :
@@ -48,7 +47,15 @@ app.post('/signIn', (req, res) =>{
 });
 
 app.put('/contactAdd', (req, res) =>{
-
+    res.setHeader('Content-Type', 'application/json');
+    const newContact = {
+        firstName : req.body.firstName,
+        lastName : req.body.lastName,
+        email : req.body.email,
+        phoneNumber : req.body.phoneNumber
+    }
+    users[0].contacts.push(newContact);
+    res.send(users[0]);
 });
 
 app.put('/contactEdit', (req, res) =>{
