@@ -26,13 +26,14 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
 const express = require('express')
 const body_parser = require('body-parser');
 const app = express()
-const port = 3000
+const port = 5000;
+const cors = require('cors');
 
 
 app.use(body_parser.urlencoded({ extended: true }))
 
 app.use(body_parser.json());
-
+app.use(cors());
 
 
 app.get('/', (req, res) => res.send('Hello World!'))
@@ -45,6 +46,7 @@ app.post('/signUp', (req, res) =>{
         password : req.body.password
     }
     users.push(newUser);
+    console.log(users);
     res.send(users);
 })
 
@@ -52,6 +54,7 @@ app.post('/signIn', (req, res) =>{
     res.setHeader('Content-Type', 'application/json');
     for (user of users){
         if(user.name === req.body.name && user.email === req.body.email && user.password === req.body.password){
+            console.log(user);
             res.send(user);
         }
     }
