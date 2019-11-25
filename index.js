@@ -59,11 +59,17 @@ app.post('/signIn', (req, res) =>{
         }
     }
     res.send("user not found");
+    // res.setHeader('Content-Type', 'text')
+    // res.send("hello from sign in");
 
 });
 
+app.get('/mock',(req,res) =>{
+    res.send("backend");
+})
+
 app.put('/contactAdd', (req, res) =>{
-    res.setHeader('Content-Type', 'application/json');
+    res.setHeaodyder('Content-Type', 'application/json');
     const newContact = {
         firstName : req.body.firstName,
         lastName : req.body.lastName,
