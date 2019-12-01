@@ -47,34 +47,28 @@ app.post('/signUp', (req, res) =>{
     }
     users.push(newUser);
     console.log(users);
-    res.send(users);
+    res.send(users[1]);
 })
 
 app.post('/signIn', (req, res) =>{
     res.setHeader('Content-Type', 'application/json');
     for (user of users){
-        if(user.name === req.body.name && user.email === req.body.email && user.password === req.body.password){
+        if(user.email === req.body.email && user.password === req.body.password){
             console.log(user);
             res.send(user);
         }
     }
     res.send("user not found");
-    // res.setHeader('Content-Type', 'text')
-    // res.send("hello from sign in");
-
 });
 
-app.get('/mock',(req,res) =>{
-    res.send("backend");
-})
-
 app.put('/contactAdd', (req, res) =>{
-    res.setHeaodyder('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'application/json');
+    const body = req.body;
     const newContact = {
-        firstName : req.body.firstName,
-        lastName : req.body.lastName,
-        email : req.body.email,
-        phoneNumber : req.body.phoneNumber
+        firstName : body.firstName,
+        lastName : body.lastName,
+        email : body.email,
+        phoneNumber : body.phoneNumber
     }
     users[0].contacts.push(newContact);
     res.send(users[0]);
