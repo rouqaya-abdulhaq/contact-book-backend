@@ -28,7 +28,8 @@ const body_parser = require('body-parser');
 const app = express()
 const port = 5000;
 const cors = require('cors');
-
+const regiterationController = require('./controllers/registrationController');
+const contactController = require('./controllers/contactController');
 
 app.use(body_parser.urlencoded({ extended: true }))
 
@@ -38,57 +39,59 @@ app.use(cors());
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.post('/signUp', (req, res) =>{
-    res.setHeader('Content-Type', 'application/json');
-    const newUser = {
-        name : req.body.name,
-        email : req.body.email,
-        password : req.body.password
-    }
-    users.push(newUser);
-    console.log(users);
-    res.send(users[1]);
-})
+// app.post('/signUp', (req, res) =>{
+//     res.setHeader('Content-Type', 'application/json');
+//     const newUser = {
+//         name : req.body.name,
+//         email : req.body.email,
+//         password : req.body.password
+//     }
+//     users.push(newUser);
+//     console.log(users);
+//     res.send(users[1]);
+// })
 
-app.post('/signIn', (req, res) =>{
-    res.setHeader('Content-Type', 'application/json');
-    for (user of users){
-        if(user.email === req.body.email && user.password === req.body.password){
-            console.log(user);
-            res.send(user);
-        }
-    }
-    res.send("user not found");
-});
+// app.post('/signIn', (req, res) =>{
+//     res.setHeader('Content-Type', 'application/json');
+//     for (user of users){
+//         if(user.email === req.body.email && user.password === req.body.password){
+//             console.log(user);
+//             res.send(user);
+//         }
+//     }
+//     res.send("user not found");
+// });
+regiterationController(app);
+// app.put('/contactAdd', (req, res) =>{
+//     res.setHeader('Content-Type', 'application/json');
+//     const body = req.body;
+//     const newContact = {
+//         firstName : body.firstName,
+//         lastName : body.lastName,
+//         email : body.email,
+//         phoneNumber : body.phoneNumber
+//     }
+//     users[0].contacts.push(newContact);
+//     res.send(users[0]);
+// });
 
-app.put('/contactAdd', (req, res) =>{
-    res.setHeader('Content-Type', 'application/json');
-    const body = req.body;
-    const newContact = {
-        firstName : body.firstName,
-        lastName : body.lastName,
-        email : body.email,
-        phoneNumber : body.phoneNumber
-    }
-    users[0].contacts.push(newContact);
-    res.send(users[0]);
-});
+// app.put('/contactEdit', (req, res) =>{
+//     res.setHeader('Content-Type', 'application/json');
+//     const editedContact = {
+//         firstName : req.body.firstName,
+//         lastName : req.body.lastName,
+//         email : req.body.email,
+//         phoneNumber : req.body.phoneNumber
+//     }
+//     users[0].contacts[req.body.index] = editedContact;
+//     res.send(users[0]);
+// });
 
-app.put('/contactEdit', (req, res) =>{
-    res.setHeader('Content-Type', 'application/json');
-    const editedContact = {
-        firstName : req.body.firstName,
-        lastName : req.body.lastName,
-        email : req.body.email,
-        phoneNumber : req.body.phoneNumber
-    }
-    users[0].contacts[req.body.index] = editedContact;
-    res.send(users[0]);
-});
+// app.put('/contactDelete', (req,res) =>{
+//     res.setHeader('Content-Type', 'application/json');
+//     users[0].contacts.splice(req.body.index, 1);
+//     res.send(users[0]);
+// });
 
-app.put('/contactDelete', (req,res) =>{
-    res.setHeader('Content-Type', 'application/json');
-    users[0].contacts.splice(req.body.index, 1);
-    res.send(users[0]);
-});
+contactController(app);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
