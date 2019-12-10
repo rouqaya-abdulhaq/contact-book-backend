@@ -13,7 +13,10 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
         }   
 ]}];
 
+const messages = {notFound : "user not found"}
+
 module.exports = (app) =>{
+    console.log("register");
     app.post('/signUp', (req, res) =>{
         res.setHeader('Content-Type', 'application/json');
         const newUser = {
@@ -27,13 +30,14 @@ module.exports = (app) =>{
     })
     
     app.post('/signIn', (req, res) =>{
-        res.setHeader('Content-Type', 'application/json');
         for (user of users){
             if(user.email === req.body.email && user.password === req.body.password){
+                res.setHeader('Content-Type', 'application/json');
                 console.log(user);
                 res.send(user);
             }
         }
+        res.setHeader('Content-Type', 'plain/text');
         res.send("user not found");
     });
 }
