@@ -13,7 +13,6 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
         }   
 ]}];
 
-const messages = {notFound : "user not found"}
 
 module.exports = (app) =>{
     console.log("register");
@@ -30,14 +29,12 @@ module.exports = (app) =>{
     })
     
     app.post('/signIn', (req, res) =>{
-        for (user of users){
-            if(user.email === req.body.email && user.password === req.body.password){
-                res.setHeader('Content-Type', 'application/json');
-                console.log(user);
-                res.send(user);
-            }
+        //untill connected to real dataBase check first user only
+        if(users[0].email === req.body.email && users[0].password === req.body.password){
+            console.log(users[0]);
+            res.status(200).send(users[0]);
+        }else{
+            res.status(401).send('no such user');
         }
-        res.setHeader('Content-Type', 'plain/text');
-        res.send("user not found");
     });
 }
