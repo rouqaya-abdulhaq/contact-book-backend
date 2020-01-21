@@ -24,7 +24,7 @@ module.exports = (app) =>{
             phoneNumber : body.phoneNumber
         }
         users[0].contacts.push(newContact);
-        res.send(users[0]);
+        res.send(newContact);
     });
     
     app.put('/contactEdit', (req, res) =>{
@@ -36,12 +36,12 @@ module.exports = (app) =>{
             phoneNumber : req.body.phoneNumber
         }
         users[0].contacts[req.body.index] = editedContact;
-        res.send(users[0]);
+        res.send(editedContact);
     });
     
-    app.put('/contactDelete', (req,res) =>{
+    app.delete('/contactDelete', (req,res) =>{
         res.setHeader('Content-Type', 'application/json');
         users[0].contacts.splice(req.body.index, 1);
-        res.send(users[0]);
+        res.send(req.body.index.toString());
     });
 }
