@@ -15,18 +15,20 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
 
 
 module.exports = (app) =>{
-    console.log("register");
     app.post('/signUp', (req, res) =>{
         res.setHeader('Content-Type', 'application/json');
-        const newUser = {
+        const newUser = req.body.name && req.body.email && req.body.password ? {
             name : req.body.name,
             email : req.body.email,
             password : req.body.password
+        } : null;
+        if(newUser){
+            users.push(newUser);
+            res.status(200).send(users[1]);
+        }else{
+            res.status(400).send('unable to register');
         }
-        users.push(newUser);
-        console.log(users);
-        res.send(users[1]);
-    })
+    });
     
     app.post('/signIn', (req, res) =>{
         //untill connected to real dataBase check first user only
