@@ -25,7 +25,16 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
 
 const express = require('express')
 const body_parser = require('body-parser');
-const app = express()
+const app = express();
+const pg = require('pg');
+
+const DATABASE_URL = 'postgres://postgres:patapon2012@127.0.0.1:5432/contact_book';
+
+const database = new pg.Client({
+    connectionString : DATABASE_URL
+});
+
+database.connect();
 const port = 5000;
 const cors = require('cors');
 const registrationController = require('./controllers/registrationController');
@@ -35,7 +44,6 @@ app.use(body_parser.urlencoded({ extended: true }))
 
 app.use(body_parser.json());
 app.use(cors());
-
 
 
 registrationController(app);
