@@ -14,7 +14,7 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
 ]}];
 
 
-module.exports = (app) =>{
+module.exports = (app,client) =>{
     app.post('/signUp', (req, res) =>{
         res.setHeader('Content-Type', 'application/json');
         const newUser = req.body.name && req.body.email && req.body.password ? {
@@ -31,12 +31,15 @@ module.exports = (app) =>{
     });
     
     app.post('/signIn', (req, res) =>{
-        //untill connected to real dataBase check first user only
-        if(users[0].email === req.body.email && users[0].password === req.body.password){
-            console.log(users[0]);
-            res.status(200).send(users[0]);
-        }else{
-            res.status(401).send('no such user');
-        }
+        const password = req.body.password;
+        const email = req.body.email;
+        client.query(`SELECT * FROM users WHERE email='${email}' AND password='${password}'`,(err,response)=>{
+            if(response){
+                res.status(200).send(response.rows[0]); 
+            }else{
+                res.status(401).send("no such user");
+            }
+            client.end();
+        });
     });
 }

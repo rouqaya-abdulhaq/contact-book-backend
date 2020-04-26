@@ -30,11 +30,11 @@ const pg = require('pg');
 
 const DATABASE_URL = 'postgres://postgres:patapon2012@127.0.0.1:5432/contact_book';
 
-const database = new pg.Client({
+const client = new pg.Client({
     connectionString : DATABASE_URL
 });
 
-database.connect();
+client.connect();
 const port = 5000;
 const cors = require('cors');
 const registrationController = require('./controllers/registrationController');
@@ -45,8 +45,7 @@ app.use(body_parser.urlencoded({ extended: true }))
 app.use(body_parser.json());
 app.use(cors());
 
-
-registrationController(app);
+registrationController(app,client);
 
 contactController(app);
 
