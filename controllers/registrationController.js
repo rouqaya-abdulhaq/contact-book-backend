@@ -17,14 +17,24 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
 module.exports = (app,client) =>{
     app.post('/signUp', (req, res) =>{
         res.setHeader('Content-Type', 'application/json');
-        const newUser = req.body.name && req.body.email && req.body.password ? {
-            name : req.body.name,
+        const newUser = req.body.firstName && req.body.lastName && req.body.email && req.body.password ? {
+            fisrtName : req.body.firstName,
+            lastName : req.body.lastName,
             email : req.body.email,
             password : req.body.password
         } : null;
         if(newUser){
-            users.push(newUser);
-            res.status(200).send(users[1]);
+            client.query(`INSERT INTO users(user_first_name, user_last_name, email, password
+                ) VALUES('${newUser.firstName}','${newUser.lastName}','${newUser.email}','${newUser.password}')`,(err,response)=>{
+                    if(response){
+                        console.log(response);
+                        res.status(200).send(newUser);
+                    }else{
+                        console.log(err);
+                        res.status(400).send(err.detail)
+                    }
+                });
+            
         }else{
             res.status(400).send('unable to register');
         }
