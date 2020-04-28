@@ -41,8 +41,8 @@ module.exports = (app ,client) =>{
     
     app.delete('/contactDelete', (req,res) =>{
         res.setHeader('Content-Type', 'application/json');
-        users[0].contacts.splice(req.body.index, 1);
-        res.send(req.body.index.toString());
+        const id = req.body.id;
+        deleteContactFromDB(id,client,res);
     });
 }
 
@@ -64,6 +64,17 @@ const getContactFromDB = (id, client, res) =>{
             res.status(200).send(response.rows[0]);
         }else{
             res.status(403).send("something went wrong");
+        }
+        client.end();
+    })
+}
+
+const deleteContactFromDB = (id, client ,res) =>{
+    client.query(`DELETE FROM contacts WHERE contact_id = '${id}'`,(err,response)=>{
+        if(response){
+            res.status(200).send(response);
+        }else{
+            res.status(403).send("could not delete");
         }
         client.end();
     })
