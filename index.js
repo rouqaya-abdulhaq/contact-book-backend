@@ -47,7 +47,7 @@ app.use(cors());
 
 registrationController(app,client);
 
-contactController(app);
+contactController(app,client);
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

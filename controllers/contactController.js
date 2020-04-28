@@ -13,18 +13,18 @@ const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red",
         }   
 ]}];
 
-module.exports = (app) =>{
+module.exports = (app ,client) =>{
     app.put('/contactAdd', (req, res) =>{
         res.setHeader('Content-Type', 'application/json');
         const body = req.body;
         const newContact = {
+            userId : body.userId,
             firstName : body.firstName,
             lastName : body.lastName,
             email : body.email,
             phoneNumber : body.phoneNumber
         }
-        users[0].contacts.push(newContact);
-        res.send(newContact);
+        addContactToDB(newContact,client,res);
     });
     
     app.put('/contactEdit', (req, res) =>{
@@ -44,4 +44,27 @@ module.exports = (app) =>{
         users[0].contacts.splice(req.body.index, 1);
         res.send(req.body.index.toString());
     });
+}
+
+const addContactToDB = (contact, client ,res) =>{
+    client.query(`INSERT INTO contacts(user_id,contact_first_name,contact_last_name,contact_email,contact_phone_number)
+    VALUES('${contact.userId}','${contact.firstName}','${contact.lastName}','${contact.email}','${contact.phoneNumber}') RETURNING contact_id`,(err ,response)=>{
+        if(response){
+            const id = response.rows[0].contact_id;
+            getContactFromDB(id,client,res);
+        }else{
+            res.status(403).send("something went wrong");
+        }
+    });
+}
+
+const getContactFromDB = (id, client, res) =>{
+    client.query(`SELECT * FROM contacts WHERE contact_id = '${id}'`,(err,response)=>{
+        if(response){
+            res.status(200).send(response.rows[0]);
+        }else{
+            res.status(403).send("something went wrong");
+        }
+        client.end();
+    })
 }
