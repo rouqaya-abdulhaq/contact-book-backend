@@ -1,18 +1,3 @@
-const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red", contacts : [
-    {
-        firstName : "rahaf",
-        lastName : "abdulhaq",
-        email : "rahaf@gmail.com",
-        phoneNumber : "765373768"
-        },
-        {
-            firstName : "ghada",
-            lastName : "abdulhaq",
-            email : "ghada@gmail.com",
-            phoneNumber : "765373768"
-        }   
-]}];
-
 module.exports = (app ,client) =>{
     app.put('/contactAdd', (req, res) =>{
         res.setHeader('Content-Type', 'application/json');
@@ -33,10 +18,10 @@ module.exports = (app ,client) =>{
             firstName : req.body.firstName,
             lastName : req.body.lastName,
             email : req.body.email,
-            phoneNumber : req.body.phoneNumber
+            phoneNumber : req.body.phoneNumber,
+            id : req.body.contactId
         }
-        users[0].contacts[req.body.index] = editedContact;
-        res.send(editedContact);
+        editContactInDB(editedContact,client,res);
     });
     
     app.delete('/contactDelete', (req,res) =>{
@@ -54,6 +39,20 @@ const addContactToDB = (contact, client ,res) =>{
             getContactFromDB(id,client,res);
         }else{
             res.status(403).send("something went wrong");
+        }
+    });
+}
+
+const editContactInDB = (editedContact , client ,res) =>{   
+    client.query(`UPDATE contacts SET contact_first_name = '${editedContact.firstName}',contact_last_name = '${editedContact.lastName}',
+    contact_email = '${editedContact.email}', contact_phone_number = '${editedContact.phoneNumber}'
+    WHERE contact_id = '${editedContact.id}' RETURNING contact_id`,(err,response)=>{
+        if(response){
+            const id = response.rows[0].contact_id;
+            getContactFromDB(id,client,res); 
+        }else{
+            console.log(err);
+            res.status(403).send("could not edit contact");
         }
     });
 }
