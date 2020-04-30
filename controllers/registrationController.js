@@ -18,9 +18,11 @@ module.exports = (app,client) =>{
 
 const addUserToDB = (newUser,res,client) =>{
     client.query(`INSERT INTO users(user_first_name, user_last_name, email, password
-        ) VALUES('${newUser.firstName}','${newUser.lastName}','${newUser.email}','${newUser.password}')`,(err,response)=>{
+        ) VALUES('${newUser.firstName}','${newUser.lastName}','${newUser.email}','${newUser.password}')
+        RETURNING email, password`,(err,response)=>{
             if(response){
-                getUserFromDB(newUser.email,newUser.password,res);
+                const returnedValue = response.rows[0];
+                getUserFromDB(returnedValue.email,returnedValue.password,res,client);
             }else{
                 console.log(err);
                 res.status(400).send(err.detail)
