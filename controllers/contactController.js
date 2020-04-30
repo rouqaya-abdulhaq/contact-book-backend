@@ -64,7 +64,6 @@ const getContactFromDB = (id, client, res) =>{
         }else{
             res.status(403).send("something went wrong");
         }
-        client.end();
     })
 }
 
@@ -75,6 +74,5 @@ const deleteContactFromDB = (id, client ,res) =>{
         }else{
             res.status(403).send("could not delete");
         }
-        client.end();
     })
 }

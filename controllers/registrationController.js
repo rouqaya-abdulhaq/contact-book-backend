@@ -37,7 +37,6 @@ const getUserFromDB = (email,password ,res,client) =>{
             console.log(err);
             res.status(401).send("no such user");
         }
-        client.end();
     });
 }
 
