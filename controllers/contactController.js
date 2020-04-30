@@ -31,9 +31,21 @@ module.exports = (app ,client) =>{
     });
 }
 
+const addingContactQuery = (contact) =>  {
+    return `INSERT INTO contacts(user_id,contact_first_name,contact_last_name,contact_email,contact_phone_number)
+    VALUES('${contact.userId}','${contact.firstName}','${contact.lastName}','${contact.email}','${contact.phoneNumber}') 
+    RETURNING contact_id`; 
+}
+
+const editingContactQuery = (editedContact) =>{
+    return `UPDATE contacts SET contact_first_name = '${editedContact.firstName}',contact_last_name = '${editedContact.lastName}',
+    contact_email = '${editedContact.email}', contact_phone_number = '${editedContact.phoneNumber}'
+    WHERE contact_id = '${editedContact.id}' RETURNING contact_id`;
+}
+
 const addContactToDB = (contact, client ,res) =>{
-    client.query(`INSERT INTO contacts(user_id,contact_first_name,contact_last_name,contact_email,contact_phone_number)
-    VALUES('${contact.userId}','${contact.firstName}','${contact.lastName}','${contact.email}','${contact.phoneNumber}') RETURNING contact_id`,(err ,response)=>{
+    const query = addingContactQuery(contact);
+    client.query(query,(err ,response)=>{
         if(response){
             const id = response.rows[0].contact_id;
             getContactFromDB(id,client,res);
@@ -44,9 +56,8 @@ const addContactToDB = (contact, client ,res) =>{
 }
 
 const editContactInDB = (editedContact , client ,res) =>{   
-    client.query(`UPDATE contacts SET contact_first_name = '${editedContact.firstName}',contact_last_name = '${editedContact.lastName}',
-    contact_email = '${editedContact.email}', contact_phone_number = '${editedContact.phoneNumber}'
-    WHERE contact_id = '${editedContact.id}' RETURNING contact_id`,(err,response)=>{
+    const query = editingContactQuery(editedContact);
+    client.query(query,(err,response)=>{
         if(response){
             const id = response.rows[0].contact_id;
             getContactFromDB(id,client,res); 
