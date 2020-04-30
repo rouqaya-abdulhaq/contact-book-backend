@@ -16,10 +16,15 @@ module.exports = (app,client) =>{
     });
 }
 
-const addUserToDB = (newUser,res,client) =>{
-    client.query(`INSERT INTO users(user_first_name, user_last_name, email, password
+const addingUserQuery = (newUser) =>{
+    return `INSERT INTO users(user_first_name, user_last_name, email, password
         ) VALUES('${newUser.firstName}','${newUser.lastName}','${newUser.email}','${newUser.password}')
-        RETURNING email, password`,(err,response)=>{
+        RETURNING email, password`;
+}
+
+const addUserToDB = (newUser,res,client) =>{
+    const query = addingUserQuery(newUser)
+    client.query(query,(err,response)=>{
             if(response){
                 const returnedValue = response.rows[0];
                 getUserFromDB(returnedValue.email,returnedValue.password,res,client);
@@ -29,6 +34,7 @@ const addUserToDB = (newUser,res,client) =>{
             }
         });
 }
+
 const getUserFromDB = (email,password ,res,client) =>{
     client.query(`SELECT * FROM users WHERE email='${email}' AND password='${password}'`,(err,response)=>{
         if(response){
