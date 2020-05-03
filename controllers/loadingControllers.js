@@ -1,5 +1,3 @@
-// const qs = require('querystring');
-
 module.exports = (app, client) =>{
     app.get('/loadContacts' , (req,res) => {
         res.setHeader('Content-Type', 'application/json');
