@@ -39,6 +39,7 @@ const port = 5000;
 const cors = require('cors');
 const registrationController = require('./controllers/registrationController');
 const contactController = require('./controllers/contactController');
+const loadingController = require('./controllers/loadingControllers');
 
 app.use(body_parser.urlencoded({ extended: true }))
 
@@ -48,6 +49,8 @@ app.use(cors());
 registrationController(app,client);
 
 contactController(app,client);
+
+loadingController(app,client);
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

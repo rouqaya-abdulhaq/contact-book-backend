@@ -36,7 +36,7 @@ const addUserToDB = (newUser,res,client) =>{
 }
 
 const getUserFromDB = (email,password ,res,client) =>{
-    client.query(`SELECT * FROM users WHERE email='${email}' AND password='${password}'`,(err,response)=>{
+    client.query(`SELECT user_first_name, user_id FROM users WHERE email='${email}' AND password='${password}'`,(err,response)=>{
         if(response){
             res.status(200).send(response.rows[0]); 
         }else{
