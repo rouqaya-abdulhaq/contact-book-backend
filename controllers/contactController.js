@@ -81,7 +81,7 @@ const getContactFromDB = (id, client, res) =>{
 const deleteContactFromDB = (id, client ,res) =>{
     client.query(`DELETE FROM contacts WHERE contact_id = '${id}'`,(err,response)=>{
         if(response){
-            res.status(200).send(response);
+            res.status(204).send(response);
         }else{
             res.status(403).send("could not delete");
         }
