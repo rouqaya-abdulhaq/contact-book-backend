@@ -1,12 +1,22 @@
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+
 module.exports = (app,client) =>{
     app.post('/signUp', (req, res) =>{
         res.setHeader('Content-Type', 'application/json');
-        const newUser = assignNewUser(req.body);
-        if(newUser){
-            addUserToDB(newUser,res,client)
-        }else{
-            res.status(400).send('unable to register');
-        }
+        bcrypt.hash(req.body.password,saltRounds,(err,hash)=>{
+            if(err){
+                console.log(err);
+            }else{
+                const newUser = assignNewUser(req.body,hash);
+                if(newUser){
+                    addUserToDB(newUser,res,client)
+                }else{
+                    res.status(400).send('unable to register');
+                }
+            }
+        })
     });
 
     app.post('/signIn', (req, res) =>{
@@ -46,13 +56,13 @@ const getUserFromDB = (email,password ,res,client) =>{
     });
 }
 
-const assignNewUser = (reqBody) =>{
+const assignNewUser = (reqBody,passwordHash) =>{
     if(checkNewUser(reqBody)){
         return {
             firstName : reqBody.firstName,
             lastName : reqBody.lastName,
             email : reqBody.email,
-            password : reqBody.password 
+            password : passwordHash 
         }
     }
     return null;
