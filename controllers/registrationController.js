@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+
+const accessTokenSecret = 'uidufhiuerpoiwwhsih434y4egbfhybg872g3yv87249i839hngiurhui870';
 
 
 module.exports = (app,client) =>{
@@ -37,17 +40,21 @@ const addUserToDB = (newUser,res,client) =>{
     client.query(query,(err,response)=>{
             if(response){
                 const returnedValue = response.rows[0];
-                getUserFromDB(returnedValue.email,res,client);
+                getUserFromDB(returnedValue.email,res,client,newUser.accessToken);
             }else{
                 res.status(400).send(err.detail)
             }
         });
 }
 
-const getUserFromDB = (email,res,client) =>{
+const getUserFromDB = (email,res,client,accessToken) =>{
     client.query(`SELECT user_first_name, user_id FROM users WHERE email='${email}'`,(err,response)=>{
         if(response){
-            res.status(200).send(response.rows[0]); 
+            const info = {
+                ...response.rows[0],
+                accessToken : accessToken
+            }
+            res.status(200).send(info); 
         }else{
             res.status(401).send("no such user");
         }
@@ -63,7 +70,8 @@ const authUser = (email,password,res,client) =>{
                 if(err) {
                     console.log(err);
                 }else if (isMatch){
-                    getUserFromDB(email,res,client);
+                    const accessToken = jwt.sign(email,accessTokenSecret);
+                    getUserFromDB(email,res,client,accessToken);
                 }
             });
         }
@@ -72,7 +80,9 @@ const authUser = (email,password,res,client) =>{
 
 const assignNewUser = (reqBody,passwordHash) =>{
     if(checkNewUser(reqBody)){
+        const accessToken = jwt.sign(reqBody.email,accessTokenSecret);
         return {
+            accessToken : accessToken,
             firstName : reqBody.firstName,
             lastName : reqBody.lastName,
             email : reqBody.email,

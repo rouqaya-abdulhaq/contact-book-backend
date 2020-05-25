@@ -27,6 +27,9 @@ const express = require('express')
 const body_parser = require('body-parser');
 const app = express();
 const pg = require('pg');
+// const jwt = require('jsonwebtoken');
+
+// const accessTokenSecret = 'uidufhiuerpoiwwhsih434y4egbfhybg872g3yv87249i839hngiurhui870';
 
 const DATABASE_URL = 'postgres://postgres:patapon2012@127.0.0.1:5432/contact_book';
 
