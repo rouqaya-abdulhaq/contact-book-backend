@@ -70,7 +70,7 @@ const authUser = (email,password,res,client) =>{
                 if(err) {
                     console.log(err);
                 }else if (isMatch){
-                    const accessToken = jwt.sign(email,accessTokenSecret);
+                    const accessToken = jwt.sign({email : email},accessTokenSecret,{expiresIn : "1d"});
                     getUserFromDB(email,res,client,accessToken);
                 }
             });
@@ -80,7 +80,7 @@ const authUser = (email,password,res,client) =>{
 
 const assignNewUser = (reqBody,passwordHash) =>{
     if(checkNewUser(reqBody)){
-        const accessToken = jwt.sign(reqBody.email,accessTokenSecret);
+        const accessToken = jwt.sign({email : reqBody.email},accessTokenSecret,{expiresIn : '1d'});
         return {
             accessToken : accessToken,
             firstName : reqBody.firstName,
