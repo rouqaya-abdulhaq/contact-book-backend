@@ -50,9 +50,14 @@ const addUserToDB = (newUser,res,client) =>{
 const getUserFromDB = (email,res,client,accessToken) =>{
     client.query(`SELECT user_first_name, user_id FROM users WHERE email='${email}'`,(err,response)=>{
         if(response){
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
             const info = {
                 ...response.rows[0],
-                accessToken : accessToken
+                data : {
+                    accessToken : accessToken,
+                    expiresAt : tomorrow,
+                },
             }
             res.status(200).send(info); 
         }else{
@@ -81,8 +86,13 @@ const authUser = (email,password,res,client) =>{
 const assignNewUser = (reqBody,passwordHash) =>{
     if(checkNewUser(reqBody)){
         const accessToken = jwt.sign({email : reqBody.email},accessTokenSecret,{expiresIn : '1d'});
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
         return {
-            accessToken : accessToken,
+            data : {
+                accessToken : accessToken,
+                expiresAt : tomorrow,
+            },
             firstName : reqBody.firstName,
             lastName : reqBody.lastName,
             email : reqBody.email,
