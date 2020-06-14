@@ -1,5 +1,11 @@
+const jwt = require('jsonwebtoken');
+
+const accessTokenSecret = 'uidufhiuerpoiwwhsih434y4egbfhybg872g3yv87249i839hngiurhui870';
+
+
 module.exports = (app ,client) =>{
     app.put('/contactAdd', (req, res) =>{
+        verifyToken(req,res);
         res.setHeader('Content-Type', 'application/json');
         const body = req.body;
         const newContact = {
@@ -13,6 +19,7 @@ module.exports = (app ,client) =>{
     });
     
     app.put('/contactEdit', (req, res) =>{
+        verifyToken(req,res);
         res.setHeader('Content-Type', 'application/json');
         const editedContact = {
             firstName : req.body.firstName,
@@ -25,6 +32,7 @@ module.exports = (app ,client) =>{
     });
     
     app.delete('/contactDelete', (req,res) =>{
+        verifyToken(req,res);
         res.setHeader('Content-Type', 'application/json');
         const id = req.body.id;
         deleteContactFromDB(id,client,res);
@@ -86,4 +94,19 @@ const deleteContactFromDB = (id, client ,res) =>{
             res.status(403).send("could not delete");
         }
     })
+}
+
+
+const verifyToken = (req,res) =>{
+    const token = req.headers["x-access-token"];
+    if(!token){
+        return res.status(403).send({message : "no token provided"});
+    }
+    jwt.verify(token,accessTokenSecret,(err,decoded) =>{
+        if (err) {
+            return res.status(401).send({
+              message: "Unauthorized!"
+            });
+        }
+    });
 }
