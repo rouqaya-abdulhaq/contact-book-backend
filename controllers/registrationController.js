@@ -53,7 +53,9 @@ const getUserFromDB = (email,res,client,accessToken) =>{
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             const info = {
-                ...response.rows[0],
+                user : {
+                    ...response.rows[0], 
+                },
                 data : {
                     accessToken : accessToken,
                     expiresAt : tomorrow,
@@ -85,7 +87,7 @@ const authUser = (email,password,res,client) =>{
 
 const assignNewUser = (reqBody,passwordHash) =>{
     if(checkNewUser(reqBody)){
-        const accessToken = jwt.sign({email : reqBody.email},accessTokenSecret,{expiresIn : '1d'});
+        const accessToken = jwt.sign({email : reqBody.email,firstName: reqBody.firstName,lastName : reqBody.lastName},accessTokenSecret,{expiresIn : '1d'});
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         return {
