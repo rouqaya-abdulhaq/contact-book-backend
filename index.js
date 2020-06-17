@@ -22,10 +22,11 @@ const checkForToken = function(req,res,next){
         if (err) {
             return res.status(401).json({
               success: false,
-              message: 'Please register Log in using a valid email to submit posts'
+              message: 'Please register/Log in using a valid email to submit posts'
             });
         }else{
             req.email = decoded.email;
+            req.accessToken = token;
             next();
         } 
     })

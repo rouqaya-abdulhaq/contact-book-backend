@@ -25,7 +25,16 @@ module.exports = (app,client) =>{
     app.post('/signIn', (req, res) =>{
         const password = req.body.password;
         const email = req.body.email;
+        console.log(email);
         authUser(email,password,res,client);
+    });
+
+    app.get('/refresh',(req,res) =>{
+        if (req.email){
+            getUserFromDB(req.email,res,client,req.accessToken);
+        }else{
+            res.send({});
+        }
     });
 }
 
