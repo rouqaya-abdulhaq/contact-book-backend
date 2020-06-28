@@ -1,18 +1,3 @@
-const users = [{name : "rouqaya", email : "rouqaya@gmail.com", password : "red", contacts : [
-    {
-        firstName : "rahaf",
-        lastName : "abdulhaq",
-        email : "rahaf@gmail.com",
-        phoneNumber : "765373768"
-        },
-        {
-            firstName : "ghada",
-            lastName : "abdulhaq",
-            email : "ghada@gmail.com",
-            phoneNumber : "765373768"
-        }   
-]}];
-
 const checkForToken = function(req,res,next){
     const token = req.headers["x-access-token"];
     if(!token){
@@ -46,6 +31,8 @@ const express = require('express')
 const body_parser = require('body-parser');
 const app = express();
 const pg = require('pg');
+const session = require('express-session');
+
 
 const DATABASE_URL = 'postgres://postgres:patapon2012@127.0.0.1:5432/contact_book';
 
@@ -68,6 +55,10 @@ app.use(body_parser.urlencoded({ extended: true }))
 
 app.use(body_parser.json());
 app.use(cors());
+app.use(session({secret : "ufbeu8374g8efuhe8q0e4hg9windnjmiujnrbge8y04v083ub37w8beoipfnrepingieurn8595hu", 
+                saveUninitialized: true,
+                resave: true,
+                maxAge: 20000}));
 app.use(checkForToken);
 
 registrationController(app,client);
