@@ -58,7 +58,9 @@ app.use(cors());
 app.use(session({secret : "ufbeu8374g8efuhe8q0e4hg9windnjmiujnrbge8y04v083ub37w8beoipfnrepingieurn8595hu", 
                 saveUninitialized: true,
                 resave: true,
-                maxAge: 20000}));
+                maxAge: 20000,
+                cookie: { secure: true }}
+                ));
 app.use(checkForToken);
 
 registrationController(app,client);

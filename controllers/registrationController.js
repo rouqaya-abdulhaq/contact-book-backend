@@ -70,6 +70,7 @@ const getUserFromDB = (email,res,client,accessToken) =>{
                     expiresAt : tomorrow,
                 },
             }
+            res.setHeader('Set-Cookie',`access_token=${info.data.accessToken}; Expires=${info.data.expiresAt}; Secure; HttpOnly;`);
             res.status(200).send(info); 
         }else{
             res.status(401).send("no such user");
