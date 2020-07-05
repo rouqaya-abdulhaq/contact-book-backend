@@ -25,7 +25,6 @@ module.exports = (app,client) =>{
     app.post('/signIn', (req, res) =>{
         const password = req.body.password;
         const email = req.body.email;
-        console.log(email);
         authUser(email,password,res,client);
     });
 
@@ -70,7 +69,6 @@ const getUserFromDB = (email,res,client,accessToken) =>{
                     expiresAt : tomorrow,
                 },
             }
-            res.setHeader('Set-Cookie',`access_token=${info.data.accessToken}; Expires=${info.data.expiresAt}; Secure; HttpOnly;`);
             res.status(200).send(info); 
         }else{
             res.status(401).send("no such user");
