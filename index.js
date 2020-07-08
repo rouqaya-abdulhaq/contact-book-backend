@@ -14,6 +14,7 @@ const cors = require('cors');
 const registrationController = require('./controllers/registrationController');
 const contactController = require('./controllers/contactController');
 const loadingController = require('./controllers/loadingControllers');
+const styleController = require('./controllers/styleController');
 const jwt = require('jsonwebtoken');
 
 const accessTokenSecret = 'uidufhiuerpoiwwhsih434y4egbfhybg872g3yv87249i839hngiurhui870';
@@ -50,5 +51,7 @@ registrationController(app,client);
 contactController(app,client);
 
 loadingController(app,client);
+
+styleController(app,client);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
