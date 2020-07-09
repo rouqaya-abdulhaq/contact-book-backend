@@ -56,7 +56,7 @@ const addUserToDB = (newUser,res,client) =>{
 }
 
 const getUserFromDB = (email,res,client,accessToken) =>{
-    client.query(`SELECT user_first_name, user_id FROM users WHERE email='${email}'`,(err,response)=>{
+    client.query(`SELECT user_first_name, user_id, style FROM users WHERE email='${email}'`,(err,response)=>{
         if(response){
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
