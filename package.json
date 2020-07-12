@@ -10,6 +10,10 @@
     "type": "git",
     "url": "git://github.com/rouqaya-abdulhaq/contact-book-backend.git"
   },
+  "engines": {
+    "node": "12.16.1",
+    "npm": "6.13.4"
+  },
   "author": "rouqaya abdulhaq",
   "license": "ISC",
   "dependencies": {
