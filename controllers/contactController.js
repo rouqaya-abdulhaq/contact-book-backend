@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const accessTokenSecret = 'uidufhiuerpoiwwhsih434y4egbfhybg872g3yv87249i839hngiurhui870';
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 
 module.exports = (app ,client) =>{

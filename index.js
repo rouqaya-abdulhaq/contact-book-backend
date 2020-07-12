@@ -1,4 +1,6 @@
-const express = require('express')
+const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
 const body_parser = require('body-parser');
 const app = express();
 const pg = require('pg');
@@ -9,7 +11,7 @@ const client = new pg.Client({
 });
 
 client.connect();
-const port = 5000;
+const port = process.env.PORT;
 const cors = require('cors');
 const registrationController = require('./controllers/registrationController');
 const contactController = require('./controllers/contactController');
@@ -17,7 +19,7 @@ const loadingController = require('./controllers/loadingControllers');
 const styleController = require('./controllers/styleController');
 const jwt = require('jsonwebtoken');
 
-const accessTokenSecret = 'uidufhiuerpoiwwhsih434y4egbfhybg872g3yv87249i839hngiurhui870';
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 
 const checkForToken = function(req,res,next){
