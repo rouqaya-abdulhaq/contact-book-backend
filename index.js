@@ -1,22 +1,16 @@
 const express = require('express');
-const dotenv = require('dotenv');
-dotenv.config();
 const body_parser = require('body-parser');
 const app = express();
-const pg = require('pg');
-const DATABASE_URL = 'postgres://postgres:patapon2012@127.0.0.1:5432/contact_book';
-
-const client = new pg.Client({
-    connectionString : DATABASE_URL
-});
-
+const {client} = require('./config'); 
 client.connect();
 const port = process.env.PORT;
 const cors = require('cors');
+
 const registrationController = require('./controllers/registrationController');
 const contactController = require('./controllers/contactController');
 const loadingController = require('./controllers/loadingControllers');
 const styleController = require('./controllers/styleController');
+
 const jwt = require('jsonwebtoken');
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
