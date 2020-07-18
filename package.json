@@ -17,7 +17,7 @@
   "author": "rouqaya abdulhaq",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcryptjs": "^2.4.3",
     "body-parse": "^0.1.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
