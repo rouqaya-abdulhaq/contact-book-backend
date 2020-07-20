@@ -6,6 +6,7 @@ client.connect();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const registrationController = require('./controllers/registrationController');
 const contactController = require('./controllers/contactController');
@@ -41,6 +42,7 @@ app.use(body_parser.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(body_parser.json());
 app.use(cors());
+app.use(compression());
 app.use(checkForToken);
 
 registrationController(app,client);
