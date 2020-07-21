@@ -8,7 +8,6 @@ const connectionString = `postgres://${process.env.DB_USER}:${process.env.DB_PAS
 
 const client = new pg.Client({
     connectionString : isProduction ? process.env.DATABASE_URL : connectionString,
-    ssl : isProduction
 });
 
 module.exports = {client};
