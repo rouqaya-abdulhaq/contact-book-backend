@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;;
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 
 module.exports = (app,client) =>{
@@ -10,7 +10,7 @@ module.exports = (app,client) =>{
         res.setHeader('Content-Type', 'application/json');
         bcrypt.hash(req.body.password,saltRounds,(err,hash)=>{
             if(err){
-                console.log(err);
+                res.status(400).send("an error occurred while hashing password");
             }else{
                 const newUser = assignNewUser(req.body,hash);
                 if(newUser){
@@ -44,11 +44,11 @@ const addingUserQuery = (newUser) =>{
 }
 
 const addUserToDB = (newUser,res,client) =>{
-    const query = addingUserQuery(newUser)
+    const query = addingUserQuery(newUser);
     client.query(query,(err,response)=>{
             if(response){
                 const returnedValue = response.rows[0];
-                getUserFromDB(returnedValue.email,res,client,newUser.accessToken);
+                getUserFromDB(returnedValue.email,res,client,newUser.data.accessToken);
             }else{
                 res.status(400).send(err.detail)
             }
@@ -71,7 +71,7 @@ const getUserFromDB = (email,res,client,accessToken) =>{
             }
             res.status(200).send(info); 
         }else{
-            res.status(401).send("no such user");
+            res.status(401).send(err);
         }
     });
 }
@@ -83,7 +83,7 @@ const authUser = (email,password,res,client) =>{
         }else{
             bcrypt.compare(password,response.rows[0].password,(err,isMatch)=>{
                 if(err) {
-                    console.log(err);
+                    res.status(400).send("password doesn't match");;
                 }else if (isMatch){
                     const accessToken = jwt.sign({email : email},accessTokenSecret,{expiresIn : "1d"});
                     getUserFromDB(email,res,client,accessToken);
