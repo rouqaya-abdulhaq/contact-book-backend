@@ -14,4 +14,4 @@ CREATE TABLE contacts (
     contact_last_name VARCHAR(50) NOT NULL,
     contact_email VARCHAR(200) NOT NULL,
     contact_phone_number VARCHAR(20) NOT NULL,
-);
+); 

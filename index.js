@@ -38,9 +38,10 @@ const checkForToken = function(req,res,next){
 }
 
 
-const isProduction = process.env.NODE_ENV === 'production'
+// const isProduction = process.env.NODE_ENV === 'production'
 const origin = {
-  origin: isProduction ? 'https://contact-book-backend.herokuapp.com/' : '*',
+//   origin: isProduction ? 'https://contact-book-backend.herokuapp.com/' : '*',
+    origin : '*',
 }
 
 
